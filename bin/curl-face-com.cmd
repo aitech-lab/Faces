@@ -1,0 +1,1 @@
+curl -F media=@data/test.jpg "http://api.face.com/faces/detect.xml?api_key=...&api_secret=..."
