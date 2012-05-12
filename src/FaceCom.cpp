@@ -31,9 +31,9 @@ void FaceCom::callFaceCom() {
 	f.img.saveImage("processed.jpg");
 
 	// FACECOM
-	string path = "curl.exe -F media=@data\\processed.jpg \"http://api.face.com/faces/detect.xml?api_key="+string(API_KEY)+"&api_secret="+string(SEC_KEY)+"\" -o data\\processed.txt";
+	string path = "curl.exe -F media=@data\\processed.jpg \"http://api.face.com/faces/detect.xml?api_key="+string(API_KEY)+"&api_secret="+string(SEC_KEY)+"\" -o data\\processed.xml";
 	system(path.c_str());
-
+	f.xml.loadFile("processed.xml");
 	processedFaces.push_back(f);
 
 }

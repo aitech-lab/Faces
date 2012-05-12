@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<response>
+		<photos list='true'>
+			<photo>
+				<url>http://face.com/images/ph/9bec9fe6c82ea897a9ffbc7cc28a7dce.jpg</url>
+				<pid>F@811f83aa3dd07e98cf1f9999caa1931e_6b809418f222b7e20cdcc0e1beddf468</pid>
+				<width>128</width>
+				<height>128</height>
+				<tags list='true'>
+					<tag>
+						<tid>TEMP_F@811f83aa3dd07e98cf1f9999caa1931e_6b809418f222b7e20cdcc0e1beddf468_50.39_59.77_0_0</tid>
+						<recognizable>0</recognizable>
+						<threshold></threshold>
+						<uids>
+						</uids>
+						<gid></gid>
+						<label></label>
+						<confirmed>0</confirmed>
+						<manual>0</manual>
+						<tagger_id></tagger_id>
+						<width>91.41</width>
+						<height>91.41</height>
+						<center>
+							<x>50.39</x>
+							<y>59.77</y>
+						</center>
+						<eye_left>
+							<x>31.8</x>
+							<y>37.97</y>
+						</eye_left>
+						<eye_right>
+							<x>69.54</x>
+							<y>38.57</y>
+						</eye_right>
+						<mouth_left>
+							<x>37.46</x>
+							<y>78.61</y>
+						</mouth_left>
+						<mouth_center>
+							<x>52.07</x>
+							<y>78.36</y>
+						</mouth_center>
+						<mouth_right>
+							<x>64.48</x>
+							<y>77.84</y>
+						</mouth_right>
+						<nose>
+							<x>49.25</x>
+							<y>55.65</y>
+						</nose>
+						<ear_left></ear_left>
+						<ear_right></ear_right>
+						<chin></chin>
+						<yaw>1.02</yaw>
+						<roll>0.98</roll>
+						<pitch>2</pitch>
+						<attributes >
+							<face>
+								<value>true</value>
+								<confidence>98</confidence>
+							</face>
+							<gender>
+								<value>male</value>
+								<confidence>94</confidence>
+							</gender>
+							<glasses>
+								<value>false</value>
+								<confidence>92</confidence>
+							</glasses>
+							<smiling>
+								<value>false</value>
+								<confidence>100</confidence>
+							</smiling>
+						</attributes>
+					</tag>
+				</tags>
+			</photo>
+		</photos>
+
+		<status>success</status>
+		<usage>
+			<used>1</used>
+			<remaining>4999</remaining>
+			<limit>5000</limit>
+			<reset_time_text>Sat, 12 May 2012 23:26:22 +0000</reset_time_text>
+			<reset_time>1336865182</reset_time>
+		</usage>
+		<request_ids list='true'>
+			<string>73ca5cd66659c32b498d5ebe61f74e98</string>
+		</request_ids>
+
+
+	</response>

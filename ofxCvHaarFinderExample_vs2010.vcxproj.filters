@@ -26,6 +26,18 @@
     </ClCompile>
     <ClCompile Include="src\FaceCom.cpp" />
     <ClCompile Include="src\Face.cpp" />
+    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
+      <Filter>ofxXMLSettings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxml.cpp">
+      <Filter>ofxXMLSettings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
+      <Filter>ofxXMLSettings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
+      <Filter>ofxXMLSettings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\testApp.h" />
@@ -65,10 +77,19 @@
     <ClInclude Include="src\FaceCom.h" />
     <ClInclude Include="src\Face.h" />
     <ClInclude Include="src\api-keys.h" />
+    <ClInclude Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\src\ofxXmlSettings.h">
+      <Filter>ofxXMLSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxml.h">
+      <Filter>ofxXMLSettings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ofxOpenCV">
       <UniqueIdentifier>{e4d31cac-4841-4172-8ad7-84a2bd5b4884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ofxXMLSettings">
+      <UniqueIdentifier>{712f6bee-47dc-4d00-a492-6f7bf7c74cf1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

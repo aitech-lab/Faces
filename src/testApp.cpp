@@ -15,6 +15,10 @@ void testApp::setup(){
 	eyesFinder.setup("haarcascade_eye.xml");
 
 	faceCom.startThread();
+
+
+
+	
 }
 
 void testApp::exit(){

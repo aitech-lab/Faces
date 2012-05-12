@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ofxXMLSettings">
+      <UniqueIdentifier>{6858452a-94e3-41b0-be12-4df85c3ec021}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
+      <Filter>ofxXMLSettings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxml.cpp">
+      <Filter>ofxXMLSettings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
+      <Filter>ofxXMLSettings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
+      <Filter>ofxXMLSettings</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\src\ofxXmlSettings.h">
+      <Filter>ofxXMLSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxml.h">
+      <Filter>ofxXMLSettings</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
