@@ -2,12 +2,15 @@
 
 #include "ofMain.h"
 #include "ofxCvHaarFinder.h"
+#include "FaceCom.h"
+
 
 class testApp : public ofBaseApp{
 	public:
 		void setup();
 		void update();
 		void draw();
+		void exit();
 		
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -26,6 +29,8 @@ class testApp : public ofBaseApp{
 		vector<ofImage> faces;
 		vector<ofImage> eyes;
 
+		bool detectEyes;
 
+		FaceCom faceCom;
 
 };
