@@ -6,23 +6,23 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+
 	grabber.setVerbose(true);
 	grabber.initGrabber(W, H);
 
-	detectEyes = false;
-
 	faceFinder.setup("haarcascade_frontalface_alt_tree.xml");
-	eyesFinder.setup("haarcascade_eye.xml");
-
-	faceCom.startThread();
-
-
-
 	
+	//faceCom.startThread();
+
+	ofEnableAlphaBlending();
+	ofBackground(0);
+
+	labLogo.loadImage("Ailove.Lab.png");
+
 }
 
 void testApp::exit(){
-	faceCom.stopThread();
+	//faceCom.stopThread();
 }
 
 //--------------------------------------------------------------
@@ -30,31 +30,24 @@ void testApp::update(){
 	
 	grabber.grabFrame();
 	
+	faces.clear();
+	
 	if(grabber.isFrameNew()) {
 		ofImage img(grabber.getPixelsRef());
 		ofImage sml(img);
 		sml.resize(W/S, H/S);
 		faceFinder.findHaarObjects(sml, 16, 16);
 		if (faceFinder.blobs.size()) {
-			faces.clear();
-			eyes.clear();
 			for(int i = 0; i < faceFinder.blobs.size(); i++) {
-				ofRectangle r = faceFinder.blobs[i].boundingRect;
+				ofRectangle& r = faceFinder.blobs[i].boundingRect;
+				r.x -= r.width*0.1;
+				r.y -= r.width*0.2;
+				r.width  *=1.2;
+				r.height *=1.4;
 				ofImage face;
 				face.cropFrom(img, r.x*S, r.y*S, r.width*S, r.height*S);
-				face.resize(128, 128);
+				face.resize(120, 140);
 				faces.push_back(face);
-				
-				if (detectEyes) {
-					eyesFinder.findHaarObjects(face, 16, 8);
-					for(int j = 0; j < eyesFinder.blobs.size(); j++) {
-						ofRectangle r = eyesFinder.blobs[j].boundingRect;
-						ofImage eye;
-						eye.cropFrom(face, r.x, r.y, r.width, r.height);
-						eye.resize(64,64);
-						eyes.push_back(eye);
-					}
-				}
 			}
 		}
 	}
@@ -62,28 +55,40 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	static float bgAlpha = 255;
+
+	float sx = (float) grabber.width  / ofGetWidth ();
+	float sy = (float) grabber.height / ofGetHeight();
+
+	bgAlpha += faceFinder.blobs.size() ? (40.0-bgAlpha)/10.0 : (255.0-bgAlpha)/10.0;
+	ofSetColor(255,255,255, bgAlpha); 
 	
-	grabber.draw(0,0);
-	ofNoFill();
-	for(int i = 0; i < faceFinder.blobs.size(); i++) {
-		ofRectangle cur = faceFinder.blobs[i].boundingRect;
-		ofRect(cur.x*S, cur.y*S, cur.width*S, cur.height*S);
-	}
+	grabber.draw(0,0, grabber.width/sx, grabber.height/sy);
 
-	int x=0;
+	ofSetColor(255);
 	for(int i = 0; i < faces.size(); i++) {
-		faces[i].draw(x, grabber.height);
-		x +=faces[i].width;
+		ofRectangle r = faceFinder.blobs[i].boundingRect;
+		faces[i].draw(r.x*S/sx, r.y*S/sy, r.width*S/sx, r.height*S/sy);
+	}
+	
+	ofNoFill();
+	ofSetColor(255,128);
+	for(int i = 0; i < faceFinder.blobs.size(); i++) {
+		ofRectangle r = faceFinder.blobs[i].boundingRect;
+		ofRect(r.x*S/sx, r.y*S/sy, r.width*S/sx, r.height*S/sy);
 	}
 
-	if(detectEyes) {
-		x=0;
-		for(int i = 0; i < eyes.size(); i++) {
-			eyes[i].draw(x, grabber.height+128);
-			x +=eyes[i].width;
-		}
-	}	
 
+	//if(detectEyes) {
+	//	x=0;
+	//	for(int i = 0; i < eyes.size(); i++) {
+	//		eyes[i].draw(x, grabber.height+128);
+	//		x +=eyes[i].width;
+	//	}
+	//}	
+	
+	ofSetColor(255);
+	labLogo.draw(ofGetWidth() - labLogo.width, ofGetHeight() - labLogo.height); 
 }
 
 //--------------------------------------------------------------

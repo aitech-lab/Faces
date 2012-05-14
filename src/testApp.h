@@ -23,15 +23,13 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);		
 
 		ofxCvHaarFinder faceFinder;
-		ofxCvHaarFinder eyesFinder;
-
+		
 		ofVideoGrabber grabber;
 		vector<ofImage> faces;
-		vector<ofImage> eyes;
-
-		bool detectEyes;
-
+		
 		FaceCom faceCom;
+
+		ofImage labLogo;
 
 
 };

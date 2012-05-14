@@ -27,13 +27,18 @@ void FaceCom::threadedFunction() {
 void FaceCom::callFaceCom() {
 	Face f = facesQueue.front();
 	facesQueue.pop();
-	
-	f.img.saveImage("processed.jpg");
+
+	string fname = ofGetTimestampString();
+	string iname = string("photos\\")+fname+string(".jpg");
+	string xname = string("photos\\")+fname+string(".xml");
+
+	f.img.saveImage(iname);
 
 	// FACECOM
-	string path = "curl.exe -F media=@data\\processed.jpg \"http://api.face.com/faces/detect.xml?api_key="+string(API_KEY)+"&api_secret="+string(SEC_KEY)+"\" -o data\\processed.xml";
+	string path = "curl.exe -F media=@data\\"+iname+" \"http://api.face.com/faces/detect.xml?api_key="+string(API_KEY)+"&api_secret="+string(SEC_KEY)+"\" -o data\\"+xname;
 	system(path.c_str());
-	f.xml.loadFile("processed.xml");
+	ofxXmlSettings xml(xname);
+	f.parseXML(xml);
 	processedFaces.push_back(f);
 
 }
