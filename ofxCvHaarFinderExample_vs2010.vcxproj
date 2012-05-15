@@ -122,6 +122,7 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
     <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
     <ClCompile Include="src\Face.cpp" />
     <ClCompile Include="src\FaceCom.cpp" />
+    <ClCompile Include="src\FaceTracker.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\testApp.cpp" />
     <ClCompile Include="$(OF7)\addons\ofxOpenCv\src\ofxCvColorImage.cpp" />
@@ -138,6 +139,7 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
     <ClInclude Include="src\api-keys.h" />
     <ClInclude Include="src\Face.h" />
     <ClInclude Include="src\FaceCom.h" />
+    <ClInclude Include="src\FaceTracker.h" />
     <ClInclude Include="src\testApp.h" />
     <ClInclude Include="$(OF7)\addons\ofxOpenCv\src\ofxCvBlob.h" />
     <ClInclude Include="$(OF7)\addons\ofxOpenCv\src\ofxCvColorImage.h" />

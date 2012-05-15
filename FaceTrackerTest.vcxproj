@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{1763795B-413E-4B43-AA94-A9D61AC70BDA}</ProjectGuid>
+    <ProjectGuid>{716DD50C-0BBF-433B-9E3D-F59781D72599}</ProjectGuid>
     <RootNamespace>ofxCvHaarFinderExample</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
@@ -121,17 +121,13 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxml.h" />
-    <ClInclude Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
-    <ClInclude Include="tests\XMLTest\testApp.h" />
+    <ClCompile Include="src\FaceTracker.cpp" />
+    <ClCompile Include="tests\FaceTrackerTest\main.cpp" />
+    <ClCompile Include="tests\FaceTrackerTest\testApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxml.cpp" />
-    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
-    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
-    <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
-    <ClCompile Include="tests\XMLTest\main.cpp" />
-    <ClCompile Include="tests\XMLTest\testApp.cpp" />
+    <ClInclude Include="src\FaceTracker.h" />
+    <ClInclude Include="tests\FaceTrackerTest\testApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,6 +18,8 @@
     <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
       <Filter>ofxXMLSettings</Filter>
     </ClCompile>
+    <ClCompile Include="tests\XMLTest\testApp.cpp" />
+    <ClCompile Include="tests\XMLTest\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\src\ofxXmlSettings.h">
@@ -26,5 +28,6 @@
     <ClInclude Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxml.h">
       <Filter>ofxXMLSettings</Filter>
     </ClInclude>
+    <ClInclude Include="tests\XMLTest\testApp.h" />
   </ItemGroup>
 </Project>

@@ -38,6 +38,7 @@
     <ClCompile Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
       <Filter>ofxXMLSettings</Filter>
     </ClCompile>
+    <ClCompile Include="src\FaceTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\testApp.h" />
@@ -83,6 +84,7 @@
     <ClInclude Include="..\..\Libraries\of_preRelease_v007_vs2010\addons\ofxXmlSettings\libs\tinyxml.h">
       <Filter>ofxXMLSettings</Filter>
     </ClInclude>
+    <ClInclude Include="src\FaceTracker.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ofxOpenCV">

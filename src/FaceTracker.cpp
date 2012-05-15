@@ -32,9 +32,9 @@ FaceTracker::~FaceTracker(void) {
 //       lid = [0, 1,-1]       lid = [0, 1,-1]  
 //       lost face or blob = -1
 
-void FaceTracker::trackFaces(ofxCvHaarFinder& finder, ofImage& img, float S) {
+void FaceTracker::trackFaces(vector<ofRectangle>& blobs) {
 	
-	int aw = finder.blobs.size();
+	int aw = blobs.size();
 	int ah = trackedFaces.size();
 	
 	// if aw > ah
@@ -51,8 +51,8 @@ void FaceTracker::trackFaces(ofxCvHaarFinder& finder, ofImage& img, float S) {
 
 	for(int j = 0; j < ah; j++) {
 		for(int i = 0; i < aw; i++) {
-			ofRectangle& r1 = trackedFaces[j].bounds;
-			ofRectangle& r2 = finder.blobs[i].boundingRect;
+			ofRectangle& r1 = trackedFaces[j];
+			ofRectangle& r2 = blobs[i];
 			float dcx = r2.x+r2.width /2.0 - r1.x-r1.width /2.0;
 			float dcy = r2.y+r2.height/2.0 - r1.y-r1.height/2.0;
 			dst[j][i] = sqrt(dcx*dcx + dcy*dcy);
@@ -72,11 +72,13 @@ void FaceTracker::trackFaces(ofxCvHaarFinder& finder, ofImage& img, float S) {
 
 		// set new rects for tracked faces
 		if(nw) {
-			trackedFaces[i].lostCounter = LOST_TICKS;
-			trackedFaces[i].setNewRect(finder.blobs[sid[i]].boundingRect);
+			trackedFacesCounter[i] = LOST_TICKS;
+			//trackedFaces[i].lostCounter = LOST_TICKS;
+			//trackedFaces[i].setNewRect(blobs[sid[i]]);
 		} else {
-			trackedFaces[sid[i]].lostCounter = LOST_TICKS;
-			trackedFaces[sid[i]].setNewRect(finder.blobs[i].boundingRect);
+			trackedFacesCounter[sid[i]] = LOST_TICKS;
+			//trackedFaces[sid[i]].lostCounter = LOST_TICKS;
+			//trackedFaces[sid[i]].setNewRect(blobs[i]);
 		}
 	}
 
@@ -84,18 +86,22 @@ void FaceTracker::trackFaces(ofxCvHaarFinder& finder, ofImage& img, float S) {
 		if(lid[i]==-1) { // no link to face or blob
 			if (nw) { 
 				// we got an new untracked blob, creating new face for tracking
-				ofRectangle& r = finder.blobs[i].boundingRect;
-				r.x -= r.width*0.1;
-				r.y -= r.width*0.2;
-				r.width  *=1.2;
-				r.height *=1.4;
-				Face face;
-				face.img.cropFrom(img, r.x*S, r.y*S, r.width*S, r.height*S);
-				face.img.resize(120, 140);
-				trackedFaces.push_back(face);				
+				// ofRectangle& r = blobs[i];
+				// r.x -= r.width*0.1;
+				// r.y -= r.width*0.2;
+				// r.width  *=1.2;
+				// r.height *=1.4;
+				// Face face;
+				// face.img.cropFrom(img, r.x*S, r.y*S, r.width*S, r.height*S);
+				// face.img.resize(120, 140);
+				// trackedFaces.push_back(face);
+				trackedFaces.push_back(blobs[i]);
 			} else {  
 				// we got lost face, and we do not have new blob for it
-				trackedFaces[i].lostCounter--;
+				if(--trackedFacesCounter[i] <= 0) {
+					trackedFaces.erase(trackedFaces.begin() + i);
+				};
+
 			}
 		}
 	}
