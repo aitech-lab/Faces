@@ -11,8 +11,10 @@ public:
 	ofImage        img;
 	ofRectangle    bounds;
 	queue<ofPoint> track;
+	int            lostCounter;
 
 	void parseXML(ofxXmlSettings xml);
+	void setNewRect(ofRectangle rect);
 
 
 	// face.com info

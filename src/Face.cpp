@@ -3,6 +3,8 @@
 
 Face::Face() {
 
+	lostCounter = 30;
+
 	url =
 	tid = label  = 
 	recognizable =   
@@ -33,6 +35,10 @@ Face::Face() {
 
 
 Face::~Face() {
+
+}
+
+void Face::setNewRect(ofRectangle rect) {
 
 }
 
