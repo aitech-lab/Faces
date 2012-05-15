@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxCvHaarFinder.h"
 #include "FaceCom.h"
+#include "FaceTracker.h"
 #include "ofxXmlSettings.h"
 
 class testApp : public ofBaseApp{
@@ -27,7 +28,8 @@ class testApp : public ofBaseApp{
 		ofVideoGrabber grabber;
 		vector<ofImage> faces;
 		
-		FaceCom faceCom;
+		FaceCom     faceCom;
+		FaceTracker tracker;
 
 		ofImage labLogo;
 

@@ -1,14 +1,19 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxXmlSettings.h"
+#include <queue>
 
 class Face {
 public:
 	Face();
 	~Face();
 
-	ofImage img;
+	ofImage        img;
+	ofRectangle    bounds;
+	queue<ofPoint> track;
+
 	void parseXML(ofxXmlSettings xml);
+
 
 	// face.com info
 	string url            ;

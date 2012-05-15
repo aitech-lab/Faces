@@ -37,19 +37,7 @@ void testApp::update(){
 		ofImage sml(img);
 		sml.resize(W/S, H/S);
 		faceFinder.findHaarObjects(sml, 16, 16);
-		if (faceFinder.blobs.size()) {
-			for(int i = 0; i < faceFinder.blobs.size(); i++) {
-				ofRectangle& r = faceFinder.blobs[i].boundingRect;
-				r.x -= r.width*0.1;
-				r.y -= r.width*0.2;
-				r.width  *=1.2;
-				r.height *=1.4;
-				ofImage face;
-				face.cropFrom(img, r.x*S, r.y*S, r.width*S, r.height*S);
-				face.resize(120, 140);
-				faces.push_back(face);
-			}
-		}
+		tracker.trackFaces(faceFinder, img, S);
 	}
 }
 
@@ -70,14 +58,6 @@ void testApp::draw(){
 		ofRectangle r = faceFinder.blobs[i].boundingRect;
 		faces[i].draw(r.x*S/sx, r.y*S/sy, r.width*S/sx, r.height*S/sy);
 	}
-	
-	ofNoFill();
-	ofSetColor(255,128);
-	for(int i = 0; i < faceFinder.blobs.size(); i++) {
-		ofRectangle r = faceFinder.blobs[i].boundingRect;
-		ofRect(r.x*S/sx, r.y*S/sy, r.width*S/sx, r.height*S/sy);
-	}
-
 
 	//if(detectEyes) {
 	//	x=0;
