@@ -19,5 +19,12 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+		vector<ofPoint>     T;
+		vector<ofRectangle> B;
+		vector<ofPoint>     V;
+		vector<ofColor>     C;
+
+		ofImage bg;
 		
 };
