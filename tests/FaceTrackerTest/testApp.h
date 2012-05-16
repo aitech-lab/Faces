@@ -1,7 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
+#include "FaceTracker.h"
 #include "ofxXmlSettings.h"
+#include <deque>
 
 class testApp : public ofBaseApp{
 
@@ -25,6 +27,10 @@ class testApp : public ofBaseApp{
 		vector<ofPoint>     V;
 		vector<ofColor>     C;
 
+		FaceTracker        tracker;
+
 		ofImage bg;
+		static unsigned char testApp::colors[];
+
 		
 };

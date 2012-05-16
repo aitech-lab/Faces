@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ofRectangle.h"
+#include "ofMain.h"
 
 class FaceTracker
 {
@@ -12,6 +12,7 @@ public:
 	int                 trackedFacesCounter[100];
 	void trackFaces(vector<ofRectangle>& blobs);
 	
+	string debug;
 	
 };
 

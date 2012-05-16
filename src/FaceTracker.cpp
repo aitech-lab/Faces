@@ -1,6 +1,11 @@
 #include "FaceTracker.h"
+//#include <armadillo>
 
-#define LOST_TICKS 30
+#define LOST_TICKS 300
+
+//using namespace std;
+//using namespace arma;
+
 
 FaceTracker::FaceTracker(void) {
 
@@ -34,13 +39,20 @@ FaceTracker::~FaceTracker(void) {
 
 void FaceTracker::trackFaces(vector<ofRectangle>& blobs) {
 	
+	string dbg = debug = "";
+	//cout << ("\n\n---------------------------------\n");
+
 	int aw = blobs.size();
 	int ah = trackedFaces.size();
 	
+	dbg = "dst["+ofToString(aw)+"x"+ofToString(ah)+"]\n"; 
+	//cout << dbg;
+	debug += dbg;
+
 	// if aw > ah
 	int  sc = min(aw, ah); // short side counter
 	int  lc = max(aw, ah); // long side counter
-	bool nw = aw < ah;     // true - number of detected faces greater than tracked faces  
+	bool nw = aw > ah;     // true - number of detected faces greater than tracked faces  
 
 	// Allocate memory
 	float** dst; dst = new float* [ah]; for (int i = 0; i < ah; ++i) dst[i] = new float[aw];
@@ -48,23 +60,32 @@ void FaceTracker::trackFaces(vector<ofRectangle>& blobs) {
 	// if nw lid - mean blob to face link else face to blob
 	int*    sid = new int  [sc]; for (int i = 0; i < sc; ++i) sid[i] = -1; // link id
 	int*    lid = new int  [lc]; for (int i = 0; i < lc; ++i) lid[i] = -1; // back reference id, has holes
-
+	
 	for(int j = 0; j < ah; j++) {
+		dbg ="[";
 		for(int i = 0; i < aw; i++) {
 			ofRectangle& r1 = trackedFaces[j];
 			ofRectangle& r2 = blobs[i];
 			float dcx = r2.x+r2.width /2.0 - r1.x-r1.width /2.0;
 			float dcy = r2.y+r2.height/2.0 - r1.y-r1.height/2.0;
 			dst[j][i] = sqrt(dcx*dcx + dcy*dcy);
-			int c = nw ? i : j; // shortest side counter
-			int r = nw ? j : i; // reference to longer side counter
+			int c = nw ? j : i; // shortest side counter
+			int r = nw ? i : j; // reference to longer side counter
 			if(dst[j][i] < min[c]) {
 				min[c] = dst[j][i];
 				sid[c] = r;
 			}
+			dbg += ofToString(dst[j][i])+string((i<aw-1)?", ":"");
 		}
+		dbg +="]\n"; 
+		debug+=dbg;
 	}
-	
+
+	dbg= "sid["; for (int i=0; i<sc; i++) dbg+=ofToString(sid[i])+string((i<sc-1)?", ":""); dbg+= "]\n";
+	//cout << dbg; 
+	debug += dbg;
+
+	// tracking
 	for (int i=0; i<sc; i++) {
 		// if nw - lid have references to finder blobs
 		// else  - lid have references to already tracked faces
@@ -76,12 +97,17 @@ void FaceTracker::trackFaces(vector<ofRectangle>& blobs) {
 			//trackedFaces[i].lostCounter = LOST_TICKS;
 			//trackedFaces[i].setNewRect(blobs[sid[i]]);
 		} else {
+			trackedFaces[sid[i]] = blobs[i]; 
 			trackedFacesCounter[sid[i]] = LOST_TICKS;
 			//trackedFaces[sid[i]].lostCounter = LOST_TICKS;
 			//trackedFaces[sid[i]].setNewRect(blobs[i]);
 		}
 	}
+	dbg="lid["; for (int i=0; i<lc; i++) dbg+=ofToString(lid[i])+string((i<lc-1)?", ":""); dbg+= "]\n";
+	// cout << dbg; 
+	debug += dbg;
 
+	// Process new blobs and lost tracks
 	for (int i=0; i<lc; i++) {
 		if(lid[i]==-1) { // no link to face or blob
 			if (nw) { 
