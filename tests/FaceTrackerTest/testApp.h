@@ -29,7 +29,10 @@ class testApp : public ofBaseApp{
 
 		FaceTracker        tracker;
 
-		ofImage bg;
+		float oclx1;
+		float oclx2;
+		float oclw ; 
+		
 		static unsigned char testApp::colors[];
 
 		

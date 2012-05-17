@@ -13,21 +13,20 @@ unsigned char testApp::colors[] = {
 
 //--------------------------------------------------------------
 void testApp::setup(){
+	
+	oclx1 = ofGetWidth()* 4/16;
+	oclx2 = ofGetWidth()*11/16;
+	oclw  = ofGetWidth()   /16;
 
 	ofBackground(0);
 	ofEnableAlphaBlending();
-	ofSetCircleResolution(4);
+	ofSetCircleResolution(36);
 
-	bg.allocate(ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR);
-	unsigned char* pixels = bg.getPixels();
-	memset(pixels, 0x0, bg.width*bg.height*3);
-	//ofSetFrameRate(300);
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-
-	unsigned char* pixels = bg.getPixels();
+	
 
 	if(!B.size() || (B.size() < 10 && ofRandom(0.0, 100.0) > 99.0)) {
 		
@@ -46,6 +45,7 @@ void testApp::update(){
 		C.push_back(ofColor(colors[c*3], colors[c*3+1], colors[c*3+2]));
 	} 
 	
+	// random kill first 
 	if(B.size() >= 5 && ofRandom(0.0, 100.0) > 99.0) {
 		B.erase(B.begin());
 		T.erase(T.begin());
@@ -58,39 +58,31 @@ void testApp::update(){
 		float dy = B[i].y + B[i].height/2 - T[i].y;
 		float ln = sqrt(dx*dx + dy*dy);
 
-		float v = 1.0;
+		float v = 20.0;
 		
-		V[i].x += (-dx/ln*v- V[i].x)/25;
-		V[i].y += (-dy/ln*v- V[i].y)/25;
+		V[i].x += (-dx/ln*v- V[i].x)/50;
+		V[i].y += (-dy/ln*v- V[i].y)/50;
 		
 		B[i] = B[i]+V[i];
 
-		// T[i].x +=dy/ln/ln*1e2;
-		// T[i].y -=dx/ln/ln*1e2;
-		T[i].x +=dy/ln*v/2.0;
-		T[i].y -=dx/ln*v/2.0;
+		T[i].x +=dy/ln/ln*1e2*v;
+		T[i].y -=dx/ln/ln*1e2*v;
+		//T[i].x +=dy/ln*v;
+		//T[i].y -=dx/ln*v;
 	
-		// ofPoint c = B[i].getCenter();
-		// for (int j=0; j<ln/2; j++) {
-		// 	static float R =  25.0;
-		// 	static float l =  30.0;
-		// 	float x = c.x + ofRandom(-(ln-l)/R, (ln-l)/R)+ofRandom(-(ln-l)/R, (ln-l)/R);
-		// 	float y = c.y + ofRandom(-(ln-l)/R, (ln-l)/R)+ofRandom(-(ln-l)/R, (ln-l)/R);	
-		// 	if(x>0 && x<bg.width-1 && y>0 && y<bg.height-1) {
-		// 		int pa = ((int)x + (int)y*bg.width)*3;
-		// 		float r = ofRandom(0.8, 1.0);
-		// 		pixels[pa+0] = r*pixels[pa+0] + (1.0-r)*colors[((int)ln/20) % NUM_COL*3+0];
-		// 		pixels[pa+1] = r*pixels[pa+1] + (1.0-r)*colors[((int)ln/20) % NUM_COL*3+1];
-		// 		pixels[pa+2] = r*pixels[pa+2] + (1.0-r)*colors[((int)ln/20) % NUM_COL*3+2];
-		// 	}
-		// }
-
 		if(ofRandom(0.0, 100.0) > 99.5) 
 			T[i] = ofPoint( ofRandom(ofGetWidth()), ofRandom(ofGetHeight()));
 	}
-	bg.update();
 
-	vector<ofRectangle> b = B;
+	vector<ofRectangle> b;
+	// occlude  blobs
+	for (int i=0; i< B.size(); i++) {
+		float x = B[i].getCenter().x;
+		if((x<oclx1 || x>oclx1+oclw) && (x<oclx2 || x>oclx2+oclw)) {
+			b.push_back(B[i]);
+		}
+	}
+	
 	random_shuffle(b.begin(), b.end());
 	tracker.trackFaces(b);
 	
@@ -99,10 +91,7 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw() {
 	
-	ofSetColor(255);
-	bg.draw(0,0);
-	//fl.draw(0,0);
-
+	
 	ofNoFill();
 	
 	for (int i=0; i<B.size(); i++) {
@@ -115,7 +104,7 @@ void testApp::draw() {
 		ofSetColor(C[i], 80);
 		ofLine(B[i].getCenter(), T[i]);
 	}
-
+	
 	ofFill();
 	for (int i=0; i<tracker.trackedFaces.size(); i++) {
 		ofRectangle& f = tracker.trackedFaces[i];
@@ -126,6 +115,12 @@ void testApp::draw() {
 		ofSetColor(colors[i%21*3], colors[i%21*3+1], colors[i%21*3+2]);
 		ofDrawBitmapString(ofToString(i)+"-"+ofToString(tracker.trackedFacesCounter[i]/10), f.x + 10 , f.y-2);
 	}
+
+	// occlusions
+	ofSetColor(40, 200);
+	ofRect(oclx1, 0, oclw, ofGetHeight());
+	ofRect(oclx2, 0, oclw, ofGetHeight());
+
 	ofSetColor(255);
 	ofDrawBitmapString(tracker.debug, 10 , 20);
 		
