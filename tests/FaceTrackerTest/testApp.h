@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "FaceTracker.h"
+#include "Face.h"
 #include "ofxXmlSettings.h"
 #include <deque>
 
@@ -23,9 +24,7 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		vector<ofPoint>     T;
-		vector<ofRectangle> B;
-		vector<ofPoint>     V;
-		vector<ofColor>     C;
+		vector<Face>        B;
 
 		FaceTracker        tracker;
 

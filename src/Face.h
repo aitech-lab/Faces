@@ -9,7 +9,15 @@ public:
 	~Face();
 
 	int id;
+	int lostTrackingTimer;
+	ofRectangle rect;
+	ofPoint     center;
+	ofPoint     velocity;
+	ofColor     color;
 
+
+	void setCenter(const ofPoint& c); 
+	
 
 	// ofImage        img;
 	// ofRectangle    bounds;
@@ -17,8 +25,6 @@ public:
 	// int            lostCounter;
 
 	//void parseXML(ofxXmlSettings xml);
-	//void setNewRect(ofRectangle rect);
-	//
 	//
 	//// face.com info
 	//string url            ;

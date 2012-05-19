@@ -17,35 +17,57 @@ FaceTracker::~FaceTracker(void) {
 
 }
 
+void FaceTracker::addFaces(vector<Face>& blobs) {
+	for(int i=0; i<blobs.size(); i++) addFace(blobs[i]);
+}
+
+void FaceTracker::addFace(Face& blob) {
+	faces.push_back(blob);
+}
 
 void FaceTracker::trackFaces(vector<Face>& blobs) {
 	
 	int bs = blobs.size();
 	int fs = faces.size();
 
-	mat D(bs, fs);
+	if (!fs && !bs) return;
+	
+	if (!fs && bs)	return addFaces(blobs);
 
-	// if aw > ah
+	mat D(fs, bs);
 	
 	for(int j = 0; j < fs; j++) {
 		for(int i = 0; i < bs; i++) {
-			Face& ff =faces[j];
-			Face& fb =blobs[i];
-			ofPoint& cf.rect.getCenter();
-			ofPoint& cf.rect.getCenter();
+			Face& ff = faces[j];
+			Face& fb = blobs[i];
+			ofPoint& cf = ff.center;
+			ofPoint& vf = ff.velocity;
+			ofPoint& cb = fb.center;
 
-			float dcx = r2.x+r2.width /2.0 - r1.x-r1.width /2.0;
-			float dcy = r2.y+r2.height/2.0 - r1.y-r1.height/2.0;
-			D(i,j) = sqrt(dcx*dcx + dcy*dcy);
-			int c = nw ? j : i; // shortest side counter
-			int r = nw ? i : j; // reference to longer side counter
-			if(dst[j][i] < min[c]) {
-				min[c] = dst[j][i];
-				sid[c] = r;
-			}
+			// cf+vf - old center + velocity = predicted position
+			ofPoint d = cb - (cf+vf);
+			D(j,i) = d.length();
 		}
 	}
 
+	uword r, c;
+	while (D.n_rows>1 && D.n_cols>1) {
+		D.min(r, c);
+		faces[r].setCenter(blobs[c].center);
+		D.shed_col(c);
+		D.shed_row(r);
+	}
+
+	D.min(r, c);
+	faces[r].setCenter(blobs[c].center);
+
+	if(D.n_rows == 1) { // we have untracked blobs
+		D.shed_col(c);
+	}
+	if(D.n_cols == 1) { // we have faces loses blobs
+		D.shed_row(r);
+		//for (int i=0; i<D.n_rows; i++) 
+	}
 
 	// tracking
 	//for (int i=0; i<sc; i++) {

@@ -121,14 +121,14 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Face.cpp" />
     <ClCompile Include="src\FaceTracker.cpp" />
-    <ClCompile Include="tests\FaceTrackerTest\Face.cpp" />
     <ClCompile Include="tests\FaceTrackerTest\main.cpp" />
     <ClCompile Include="tests\FaceTrackerTest\testApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Face.h" />
     <ClInclude Include="src\FaceTracker.h" />
-    <ClInclude Include="tests\FaceTrackerTest\Face.h" />
     <ClInclude Include="tests\FaceTrackerTest\testApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

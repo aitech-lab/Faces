@@ -3,6 +3,9 @@
 
 Face::Face() {
 
+	velocity = ofPoint(0,0);
+	lostTrackingTimer = 300;
+
 	//lostCounter = 30;
 	//
 	//url =
@@ -38,9 +41,12 @@ Face::~Face() {
 
 }
 
-//void Face::setNewRect(ofRectangle rect) {
-//
-//}
+void Face::setCenter(const ofPoint& c) {
+	ofPoint co = center;
+	center = c;
+	velocity = c - co;
+	rect.setFromCenter(center, rect.width, rect.height);
+}
 
 
 //void Face::parseXML(ofxXmlSettings xml) {

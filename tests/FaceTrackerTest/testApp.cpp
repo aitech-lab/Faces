@@ -28,56 +28,58 @@ void testApp::setup(){
 void testApp::update(){
 	
 
-	if(!B.size() || (B.size() < 10 && ofRandom(0.0, 100.0) > 99.0)) {
+	if(!B.size() || (B.size() < 10 && ofRandom(0.0, 100.0) > 99.5)) {
 		
-		B.push_back(ofRectangle(
-			ofRandom(ofGetWidth()),
-			ofRandom(ofGetHeight()),
+		static unsigned int id = 0;
+		Face f;
+		f.id = ++id;
+		f.center = ofPoint(
+			ofRandom(ofGetWidth ()),
+			ofRandom(ofGetHeight()));
+		f.rect.setFromCenter(
+			f.center,
 			ofRandom(40.0, 80.0),
-			ofRandom(40.0, 80.0)));
+			ofRandom(40.0, 80.0));
+		
+		int c = (int) ofRandom(21);
+		f.color = ofColor(colors[c*3], colors[c*3+1], colors[c*3+2]);
+
+		B.push_back(f);
 
 		T.push_back(ofPoint(
-			ofRandom(ofGetWidth()),
-			ofRandom(ofGetHeight())));
-		
-		V.push_back(0);
-		int c = ofRandom(18);
-		C.push_back(ofColor(colors[c*3], colors[c*3+1], colors[c*3+2]));
-	} 
-	
+			ofRandom(ofGetWidth ()),
+			ofRandom(ofGetHeight())
+		));
+	}
+
 	// random kill first 
-	if(B.size() >= 5 && ofRandom(0.0, 100.0) > 99.0) {
+	if(B.size() >= 5 && ofRandom(0.0, 100.0) > 99.5) {
 		B.erase(B.begin());
 		T.erase(T.begin());
-		V.erase(V.begin());
-		C.erase(C.begin());
 	}
 
 	for (int i=0; i<B.size(); i++) {
-		float dx = B[i].x + B[i].width /2 - T[i].x;
-		float dy = B[i].y + B[i].height/2 - T[i].y;
-		float ln = sqrt(dx*dx + dy*dy);
-
-		float v = 20.0;
+		ofPoint& bc = B[i].center;
+		ofPoint  D  = T[i]-bc;
+		D.normalize();
+		float    v  = 1.0;
 		
-		V[i].x += (-dx/ln*v- V[i].x)/50;
-		V[i].y += (-dy/ln*v- V[i].y)/50;
+		B[i].velocity += (D*v-B[i].velocity)/100.0;
 		
-		B[i] = B[i]+V[i];
+		B[i].center += B[i].velocity;
+		B[i].rect.setFromCenter(B[i].center, B[i].rect.width, B[i].rect.height);
 
-		T[i].x +=dy/ln/ln*1e2*v;
-		T[i].y -=dx/ln/ln*1e2*v;
-		//T[i].x +=dy/ln*v;
-		//T[i].y -=dx/ln*v;
+		T[i].x +=B[i].velocity.y*v/2.0;
+		T[i].y -=B[i].velocity.x*v/2.0;
 	
-		if(ofRandom(0.0, 100.0) > 99.5) 
+		if(ofRandom(0.0, 100.0) > 99.85) 
 			T[i] = ofPoint( ofRandom(ofGetWidth()), ofRandom(ofGetHeight()));
 	}
 
-	vector<ofRectangle> b;
+	vector<Face> b;
 	// occlude  blobs
 	for (int i=0; i< B.size(); i++) {
-		float x = B[i].getCenter().x;
+		float x = B[i].center.x;
 		if((x<oclx1 || x>oclx1+oclw) && (x<oclx2 || x>oclx2+oclw)) {
 			b.push_back(B[i]);
 		}
@@ -95,29 +97,29 @@ void testApp::draw() {
 	ofNoFill();
 	
 	for (int i=0; i<B.size(); i++) {
-		ofSetColor(C[i]);
-		ofRect(B[i]);
+		ofSetColor(B[i].color);
+		ofRect(B[i].rect);
 		ofCircle(T[i],5);
-		ofDrawBitmapString(ofToString(i), B[i].x    , B[i].y-2);
-		ofDrawBitmapString(ofToString(i), T[i].x - 3, T[i].y-6);
+		ofDrawBitmapString(ofToString(B[i].id), B[i].rect.x, B[i].rect.y-2);
 		
-		ofSetColor(C[i], 80);
-		ofLine(B[i].getCenter(), T[i]);
+		ofSetColor(B[i].color, 80);
+		ofLine(B[i].center, T[i]);
 	}
 	
 	ofFill();
-	for (int i=0; i<tracker.trackedFaces.size(); i++) {
-		ofRectangle& f = tracker.trackedFaces[i];
-		ofPoint      c = f.getCenter();
-		ofSetColor(colors[i%21*3], colors[i%21*3+1], colors[i%21*3+2], 80);
+	for (int i=0; i<tracker.faces.size(); i++) {
+		Face&   f = tracker.faces[i];
+		ofPoint c = f.center;
+		ofSetColor(f.color, 80);
 		//ofRect(f.x+2, f.y+2, f.width-4, f.height-4);	
 		ofCircle(c, 20);
-		ofSetColor(colors[i%21*3], colors[i%21*3+1], colors[i%21*3+2]);
-		ofDrawBitmapString(ofToString(i)+"-"+ofToString(tracker.trackedFacesCounter[i]/10), f.x + 10 , f.y-2);
+		ofSetColor(f.color);
+		ofDrawBitmapString(ofToString(f.id)+"-"+ofToString(tracker.faces[i].lostTrackingTimer/10), f.rect.x , f.rect.y+f.rect.height+16);
 	}
 
 	// occlusions
 	ofSetColor(40, 200);
+	ofFill();
 	ofRect(oclx1, 0, oclw, ofGetHeight());
 	ofRect(oclx2, 0, oclw, ofGetHeight());
 
