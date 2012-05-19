@@ -27,15 +27,22 @@ void FaceTracker::addFace(Face& blob) {
 
 void FaceTracker::trackFaces(vector<Face>& blobs) {
 	
+	static struct Distance {
+		unsigned int j, i;
+		double dst;
+	};
+
 	int bs = blobs.size();
 	int fs = faces.size();
 
 	if (!fs && !bs) return;
 	
 	if (!fs && bs)	return addFaces(blobs);
-
-	mat D(fs, bs);
 	
+	field<Distance> D(fs, bs); 
+	uvec fmin(fs); fmin.zeros();
+	uvec bmin(bs); bmin.zeros();
+
 	for(int j = 0; j < fs; j++) {
 		for(int i = 0; i < bs; i++) {
 			Face& ff = faces[j];
@@ -43,31 +50,25 @@ void FaceTracker::trackFaces(vector<Face>& blobs) {
 			ofPoint& cf = ff.center;
 			ofPoint& vf = ff.velocity;
 			ofPoint& cb = fb.center;
-
 			// cf+vf - old center + velocity = predicted position
-			ofPoint d = cb - (cf+vf);
-			D(j,i) = d.length();
+			ofPoint pr = cb - (cf+vf);
+			Distance d = {j, i, pr.length() };
+			D(j,i) = d;
+			// search mins
+			if(D(j,fmin[j]).dst > d.dst) fmin[j] = i;
+			if(D(bmin[i],i).dst > d.dst) bmin[i] = j;
+		}
+	}
+	
+	// Get pairs
+	for(int j = 0; j < fs; j++) {
+		for(int i = 0; i < bs; i++) {
+			if(fmin[j] == i && bmin[i] == j) {
+				// we got fb pair
+			}
 		}
 	}
 
-	uword r, c;
-	while (D.n_rows>1 && D.n_cols>1) {
-		D.min(r, c);
-		faces[r].setCenter(blobs[c].center);
-		D.shed_col(c);
-		D.shed_row(r);
-	}
-
-	D.min(r, c);
-	faces[r].setCenter(blobs[c].center);
-
-	if(D.n_rows == 1) { // we have untracked blobs
-		D.shed_col(c);
-	}
-	if(D.n_cols == 1) { // we have faces loses blobs
-		D.shed_row(r);
-		//for (int i=0; i<D.n_rows; i++) 
-	}
 
 	// tracking
 	//for (int i=0; i<sc; i++) {
