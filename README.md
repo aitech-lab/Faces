@@ -1,7 +1,7 @@
-ofxFaceCom
+Ailove-Faces
 ==========
 
-Face recognition project, openframeworks and face.com integration.
+Face recognition project, based on openframeworks and face.com service.
 
 <img src="https://github.com/ailove-lab/Ailove-Faces/blob/master/screenshot.png?raw=true"/>
 
