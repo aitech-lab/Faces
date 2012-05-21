@@ -37,7 +37,7 @@ void testApp::update(){
 		ofImage sml(img);
 		sml.resize(W/S, H/S);
 		faceFinder.findHaarObjects(sml, 16, 16);
-		tracker.trackFaces(faceFinder, img, S);
+		//tracker.trackFaces(faceFinder, img, S);
 	}
 }
 
