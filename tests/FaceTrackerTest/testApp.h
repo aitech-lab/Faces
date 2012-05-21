@@ -23,8 +23,13 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
+		void addNewBlob();
+
 		vector<ofPoint>     T;
 		vector<Face>        B;
+
+		bool nextStep;
+		bool stepByStep;
 
 		FaceTracker        tracker;
 

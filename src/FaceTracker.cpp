@@ -2,8 +2,6 @@
 
 #include <armadillo>
 
-#define LOST_TICKS 300
-
 using namespace std;
 using namespace arma;
 
@@ -27,90 +25,103 @@ void FaceTracker::addFace(Face& blob) {
 
 void FaceTracker::trackFaces(vector<Face>& blobs) {
 	
-	static struct Distance {
-		unsigned int j, i;
-		double dst;
-	};
-
 	int bs = blobs.size();
 	int fs = faces.size();
 
 	if (!fs && !bs) return;
 	
 	if (!fs && bs)	return addFaces(blobs);
-	
-	field<Distance> D(fs, bs); 
-	uvec fmin(fs); fmin.zeros();
-	uvec bmin(bs); bmin.zeros();
 
-	for(int j = 0; j < fs; j++) {
-		for(int i = 0; i < bs; i++) {
-			Face& ff = faces[j];
-			Face& fb = blobs[i];
-			ofPoint& cf = ff.center;
-			ofPoint& vf = ff.velocity;
-			ofPoint& cb = fb.center;
-			// cf+vf - old center + velocity = predicted position
-			ofPoint pr = cb - (cf+vf);
-			Distance d = {j, i, pr.length() };
-			D(j,i) = d;
-			// search mins
-			if(D(j,fmin[j]).dst > d.dst) fmin[j] = i;
-			if(D(bmin[i],i).dst > d.dst) bmin[i] = j;
+	// Create 2d array of pointers to D structs
+	mat D(fs, bs);
+	vec fl(fs); vec bl(bs); // link establish
+	fl.zeros(); bl.zeros();
+
+	vec fmv(fs); vec bmv(bs);	// min value in row & col
+	fmv.fill(1e8); bmv.fill(1e8);
+	
+	uvec fmi(fs); uvec bmi(bs); // min index in row & col
+	fmi.fill(0); bmi.fill(0);
+	
+	// calc distnaces
+	for(int j=0; j<fs; j++) { 
+		for (int i=0; i<bs; i++) {
+			// predict new position
+			double l = (faces[j].center+faces[j].velocity-blobs[i].center).length();
+			D(j,i) = l;
+			if(l<fmv(j)) { fmv(j) = l; fmi(j) = i; }
+			if(l<bmv(i)) { bmv(i) = l; bmi(i) = j; }
+		}
+	}
+	D.print("D");
+
+	int linked = 0;
+	for(int j=0; j<fs; j++) {
+		if(fl(j)) continue; // got alreday linked col
+		int i = fmi(j);
+		if(bl(i)) continue; // got already linked row
+		if(bmi(i) == j) {
+			// we got winer
+			bool rt = faces[j].lostTrackingTimer < LOST_COUNTER; // recover track
+			fl(j) = bl(i) = 1;
+			faces[j].setCenter(blobs[i].center);
+			if(rt) faces[j].velocity = ofPoint(0,0);
+			linked++;
+		}
+	}
+
+	// Next Situations
+	// a) We have mismatched faces but still have free blobs
+	//    then we need to find new matched blobs for such faces
+	// b) We have mismatched faces and have no free blobs
+	//    then we need count down face and predict feature pos
+	// c) We have no mismatched faces but have free blobs
+	//    then we ned to create new tracked faces matched to this blobs
+	// d) We have no faces and blobs
+	//    yahoo, we did it
+	
+	// a)
+	if(fs-linked>0 && bs-linked>0) {
+		// It's a bad idea, but we just get an closest blob there
+		for(int j=0; j<fs; j++) {
+			if(fl(j)) continue;
+			double mv = 1e8;
+			uword  mi = 0; 
+			for(int i=0; i<bs; i++) {
+				if(bl(i)) continue;
+				if(D(i,j)<mv) {
+					mi = i;
+					mv = D(i,j);
+				} 
+			}
+			
+			faces[j].setCenter(blobs[mi].center);
+
+			fl(j) = bl(mi) = 1;
+			linked++;
 		}
 	}
 	
-	// Get pairs
-	for(int j = 0; j < fs; j++) {
-		for(int i = 0; i < bs; i++) {
-			if(fmin[j] == i && bmin[i] == j) {
-				// we got fb pair
+	// b)
+	if (fs-linked>0 && bs-linked==0) { // we have facesn with lost track
+		for (int j=0; j<fs; j++) {
+			if(fl(j)) continue;
+			int t = faces[j].lostTrackingTimer--;
+			if(t<=0) {
+				static int dec = 0;
+				// length of faces dectreases by one each time so index must be shifted
+				faces.erase(faces.begin()+j-(dec--)); 
 			}
 		}
 	}
 
+	// c)
+	if(fs-linked==0 && bs-linked>0) {
+		for (int i=0; i<bs; i++) {
+			if(bl(i)) continue;
+			addFace(blobs[i]);
+		}
+	}
+	
 
-	// tracking
-	//for (int i=0; i<sc; i++) {
-	//	// if nw - lid have references to finder blobs
-	//	// else  - lid have references to already tracked faces
-	//	lid[sid[i]] = i; 
-	//
-	//	// set new rects for tracked faces
-	//	if(nw) {
-	//		trackedFacesCounter[i] = LOST_TICKS;
-	//		//trackedFaces[i].lostCounter = LOST_TICKS;
-	//		//trackedFaces[i].setNewRect(blobs[sid[i]]);
-	//	} else {
-	//		trackedFaces[sid[i]] = blobs[i]; 
-	//		trackedFacesCounter[sid[i]] = LOST_TICKS;
-	//		//trackedFaces[sid[i]].lostCounter = LOST_TICKS;
-	//		//trackedFaces[sid[i]].setNewRect(blobs[i]);
-	//	}
-	//}
-
-	// Process new blobs and lost tracks
-	//for (int i=0; i<lc; i++) {
-	//	if(lid[i]==-1) { // no link to face or blob
-	//		if (nw) { 
-	//			// we got an new untracked blob, creating new face for tracking
-	//			// ofRectangle& r = blobs[i];
-	//			// r.x -= r.width*0.1;
-	//			// r.y -= r.width*0.2;
-	//			// r.width  *=1.2;
-	//			// r.height *=1.4;
-	//			// Face face;
-	//			// face.img.cropFrom(img, r.x*S, r.y*S, r.width*S, r.height*S);
-	//			// face.img.resize(120, 140);
-	//			// trackedFaces.push_back(face);
-	//			trackedFaces.push_back(blobs[i]);
-	//		} else {  
-	//			// we got lost face, and we do not have new blob for it
-	//			if(--trackedFacesCounter[i] <= 0) {
-	//				trackedFaces.erase(trackedFaces.begin() + i);
-	//			};
-	//
-	//		}
-	//	}
-	//}
 };

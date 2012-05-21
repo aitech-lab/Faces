@@ -3,6 +3,8 @@
 #include "ofxXmlSettings.h"
 #include <queue>
 
+#define LOST_COUNTER 50
+
 class Face {
 public:
 	Face();
@@ -10,6 +12,9 @@ public:
 
 	int id;
 	int lostTrackingTimer;
+
+	bool linkEstablished;
+
 	ofRectangle rect;
 	ofPoint     center;
 	ofPoint     velocity;

@@ -22,35 +22,45 @@ void testApp::setup(){
 	ofEnableAlphaBlending();
 	ofSetCircleResolution(36);
 
+	ofSetFrameRate(5);
+
+	nextStep = false;
+	stepByStep = false;
+
+	for(int i=0; i<5; i++) addNewBlob();
+}
+
+void testApp::addNewBlob() {
+	static unsigned int id = 0;
+	Face f;
+	f.id = ++id;
+	f.center = ofPoint(
+		ofRandom(ofGetWidth ()),
+		ofRandom(ofGetHeight()));
+	f.rect.setFromCenter(
+		f.center,
+		ofRandom(40.0, 80.0),
+		ofRandom(40.0, 80.0));
+		
+	int c = (int) ofRandom(21);
+	f.color = ofColor(colors[c*3], colors[c*3+1], colors[c*3+2]);
+
+	B.push_back(f);
+
+	T.push_back(ofPoint(
+		ofRandom(ofGetWidth ()),
+		ofRandom(ofGetHeight())
+	));
+	
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
 	
+	if(stepByStep && !nextStep) return;
 
-	if(!B.size() || (B.size() < 10 && ofRandom(0.0, 100.0) > 99.5)) {
-		
-		static unsigned int id = 0;
-		Face f;
-		f.id = ++id;
-		f.center = ofPoint(
-			ofRandom(ofGetWidth ()),
-			ofRandom(ofGetHeight()));
-		f.rect.setFromCenter(
-			f.center,
-			ofRandom(40.0, 80.0),
-			ofRandom(40.0, 80.0));
-		
-		int c = (int) ofRandom(21);
-		f.color = ofColor(colors[c*3], colors[c*3+1], colors[c*3+2]);
-
-		B.push_back(f);
-
-		T.push_back(ofPoint(
-			ofRandom(ofGetWidth ()),
-			ofRandom(ofGetHeight())
-		));
-	}
+	if(!B.size() || (B.size() < 10 && ofRandom(0.0, 100.0) > 99.5)) 
+		addNewBlob();
 
 	// random kill first 
 	if(B.size() >= 5 && ofRandom(0.0, 100.0) > 99.5) {
@@ -62,15 +72,15 @@ void testApp::update(){
 		ofPoint& bc = B[i].center;
 		ofPoint  D  = T[i]-bc;
 		D.normalize();
-		float    v  = 1.0;
+		float    v  = 50.0;
 		
 		B[i].velocity += (D*v-B[i].velocity)/100.0;
 		
 		B[i].center += B[i].velocity;
 		B[i].rect.setFromCenter(B[i].center, B[i].rect.width, B[i].rect.height);
 
-		T[i].x +=B[i].velocity.y*v/2.0;
-		T[i].y -=B[i].velocity.x*v/2.0;
+		T[i].x +=B[i].velocity.y*v/200.0;
+		T[i].y -=B[i].velocity.x*v/200.0;
 	
 		if(ofRandom(0.0, 100.0) > 99.85) 
 			T[i] = ofPoint( ofRandom(ofGetWidth()), ofRandom(ofGetHeight()));
@@ -88,6 +98,7 @@ void testApp::update(){
 	random_shuffle(b.begin(), b.end());
 	tracker.trackFaces(b);
 	
+	nextStep = false;
 }
 
 //--------------------------------------------------------------
@@ -97,7 +108,12 @@ void testApp::draw() {
 	ofNoFill();
 	
 	for (int i=0; i<B.size(); i++) {
-		ofSetColor(B[i].color);
+		float x = B[i].center.x;
+		if((x<oclx1 || x>oclx1+oclw) && (x<oclx2 || x>oclx2+oclw)) {
+			ofSetColor(B[i].color);
+		} else {
+			ofSetColor(B[i].color, 40);
+		}
 		ofRect(B[i].rect);
 		ofCircle(T[i],5);
 		ofDrawBitmapString(ofToString(B[i].id), B[i].rect.x, B[i].rect.y-2);
@@ -111,9 +127,10 @@ void testApp::draw() {
 		Face&   f = tracker.faces[i];
 		ofPoint c = f.center;
 		ofSetColor(f.color, 80);
-		//ofRect(f.x+2, f.y+2, f.width-4, f.height-4);	
+		//ofRect(f.x+2, f.y+2, f.width-4, f.height-4);
 		ofCircle(c, 20);
 		ofSetColor(f.color);
+		ofLine(f.center, f.center+f.velocity);
 		ofDrawBitmapString(ofToString(f.id)+"-"+ofToString(tracker.faces[i].lostTrackingTimer/10), f.rect.x , f.rect.y+f.rect.height+16);
 	}
 
@@ -135,6 +152,8 @@ void testApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
+	if(key == ' ') nextStep   = true;
+	if(key == 's') stepByStep = !stepByStep;
 
 }
 
