@@ -9,6 +9,7 @@ public:
 	FaceTracker(void);
 	~FaceTracker(void);
 	
+	ofImage* source;
 	vector<Face> faces;
 	
 	void trackFaces(vector<Face>& blobs);

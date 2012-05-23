@@ -6,7 +6,7 @@ using namespace std;
 using namespace arma;
 
 FaceTracker::FaceTracker(void) {
-
+	source = NULL;
 }
 
 FaceTracker::~FaceTracker(void) {
@@ -25,6 +25,7 @@ void FaceTracker::trackFaces(vector<Face>& blobs) {
 	
 	int bs = blobs.size();
 	int fs = faces.size();
+	int linked = 0;
 
 	if (!fs && !bs) return;
 	
@@ -41,30 +42,41 @@ void FaceTracker::trackFaces(vector<Face>& blobs) {
 	uvec fmi(fs); uvec bmi(bs); // min index in row & col
 	fmi.fill(0); bmi.fill(0);
 	
-	// calc distnaces
-	for(int j=0; j<fs; j++) { 
-		for (int i=0; i<bs; i++) {
-			// predict new position
-			double l = (faces[j].center+faces[j].velocity-blobs[i].center).length();
-			D(j,i) = l;
-			if(l<fmv(j)) { fmv(j) = l; fmi(j) = i; }
-			if(l<bmv(i)) { bmv(i) = l; bmi(i) = j; }
+	if(bs) {
+		// calc distnaces
+		for(int j=0; j<fs; j++) { 
+			for (int i=0; i<bs; i++) {
+				// predict new position
+				double l = (faces[j].center+faces[j].velocity-blobs[i].center).length();
+				D(j,i) = l;
+				if(l<fmv(j)) { fmv(j) = l; fmi(j) = i; }
+				if(l<bmv(i)) { bmv(i) = l; bmi(i) = j; }
+			}
 		}
-	}
-	D.print("D");
+		// D.print("D");
+	
+		for(int j=0; j<fs; j++) {
+			if(fl(j)) continue; // got alreday linked col
+			int i = fmi(j);
+			if(bl(i)) continue; // got already linked row
+			if(bmi(i) == j) {
+				// we got winer
+				bool rt = faces[j].lostTrackingTimer < LOST_COUNTER; // recover track
+				fl(j) = bl(i) = 1;
+				faces[j].setCenter(blobs[i].center);
+				faces[j].rect.width  = blobs[i].rect.width ;
+				faces[j].rect.height = blobs[i].rect.height;
 
-	int linked = 0;
-	for(int j=0; j<fs; j++) {
-		if(fl(j)) continue; // got alreday linked col
-		int i = fmi(j);
-		if(bl(i)) continue; // got already linked row
-		if(bmi(i) == j) {
-			// we got winer
-			bool rt = faces[j].lostTrackingTimer < LOST_COUNTER; // recover track
-			fl(j) = bl(i) = 1;
-			faces[j].setCenter(blobs[i].center);
-			if(rt) faces[j].velocity = ofPoint(0,0);
-			linked++;
+				if(rt) faces[j].velocity = ofPoint(0,0); // if tracking recovered - reset speed
+				
+				if (source) {
+					ofRectangle& r = faces[j].rect;
+					faces[j].img.cropFrom(*source, r.x, r.y, r.width, r.height);
+					faces[j].img.resize(128,128);
+				}
+
+				linked++;
+			}
 		}
 	}
 
@@ -95,7 +107,7 @@ void FaceTracker::trackFaces(vector<Face>& blobs) {
 			
 			faces[j].setCenter(blobs[mi].center);
 
-			fl(j) = bl(mi) = 1;
+			fl(j) = bl (mi) = 1;
 			linked++;
 		}
 	}
@@ -103,10 +115,10 @@ void FaceTracker::trackFaces(vector<Face>& blobs) {
 	// b)
 	if (fs-linked>0 && bs-linked==0) { // we have facesn with lost track
 		for (int j=0; j<fs; j++) {
+			int dec = 0;
 			if(fl(j)) continue;
 			int t = faces[j].lostTrackingTimer--;
 			if(t<=0) {
-				static int dec = 0;
 				// length of faces dectreases by one each time so index must be shifted
 				faces.erase(faces.begin()+j-(dec--)); 
 			}

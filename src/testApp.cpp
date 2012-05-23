@@ -2,7 +2,7 @@
 
 #define W 640
 #define H 480
-#define S   4
+#define S   2
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -38,9 +38,11 @@ void testApp::update(){
 		sml.resize(W/S, H/S);
 		faceFinder.findHaarObjects(sml, 16, 16);
 		
+		tracker.source = &sml;
 
+		int bs = faceFinder.blobs.size();
 		vector<Face> blobs;
-		for(int i=0; i<faceFinder.blobs.size(); i++) {
+		for(int i=0; i<bs; i++) {
 			Face        f;
 			ofRectangle b = faceFinder.blobs[i].boundingRect;
 			f.rect.width  = b.width;
@@ -49,8 +51,8 @@ void testApp::update(){
 			blobs.push_back(f);
 		}
 		tracker.trackFaces(blobs);
-		cout << blobs.size() << "\n";
 	}
+	
 }
 
 //--------------------------------------------------------------
@@ -60,25 +62,26 @@ void testApp::draw(){
 	float sx = (float) grabber.width  / ofGetWidth ();
 	float sy = (float) grabber.height / ofGetHeight();
 
-	bgAlpha += faceFinder.blobs.size() ? (40.0-bgAlpha)/10.0 : (255.0-bgAlpha)/10.0;
-	ofSetColor(255,255,255, bgAlpha); 
+	//bgAlpha += faceFinder.blobs.size() ? (40.0-bgAlpha)/10.0 : (255.0-bgAlpha)/10.0;
+	//ofSetColor(255,255,255, bgAlpha); 
 	
+	
+	ofSetColor(255);
 	grabber.draw(0,0, grabber.width/sx, grabber.height/sy);
 
-	ofSetColor(255);
 	for(int i = 0; i < tracker.faces.size(); i++) {
+		
 		ofRectangle r = tracker.faces[i].rect;
+
+		if(tracker.faces[i].img.isAllocated()) 
+			tracker.faces[i].img.draw(r.x*S/sx, r.y*S/sy, r.width*S/sx, r.height*S/sy); 
+	
+		ofNoFill();
 		ofRect(r.x*S/sx, r.y*S/sy, r.width*S/sx, r.height*S/sy);
+
+		ofDrawBitmapString(ofToString(tracker.faces[i].lostTrackingTimer), r.x*S/sx, r.y*S/sy-1);
 	}
 
-	//if(detectEyes) {
-	//	x=0;
-	//	for(int i = 0; i < eyes.size(); i++) {
-	//		eyes[i].draw(x, grabber.height+128);
-	//		x +=eyes[i].width;
-	//	}
-	//}	
-	
 	ofSetColor(255);
 	labLogo.draw(ofGetWidth() - labLogo.width, ofGetHeight() - labLogo.height); 
 }
@@ -87,7 +90,7 @@ void testApp::draw(){
 void testApp::keyPressed(int key){
 
 	if (key=='s') {
-		if(!faces.empty()) {
+		if(!tracker.faces.empty()) {
 			Face f;
 			//f.img = faces[0];
 			//faceCom.addFace(f);
