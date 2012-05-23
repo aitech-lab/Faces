@@ -12,7 +12,7 @@ void testApp::setup(){
 
 	faceFinder.setup("haarcascade_frontalface_alt_tree.xml");
 	
-	//faceCom.startThread();
+	faceCom.startThread();
 
 	ofEnableAlphaBlending();
 	ofBackground(0);
@@ -22,7 +22,8 @@ void testApp::setup(){
 }
 
 void testApp::exit(){
-	//faceCom.stopThread();
+	faceCom.stopThread();
+	Sleep(1000);
 }
 
 //--------------------------------------------------------------
@@ -36,7 +37,7 @@ void testApp::update(){
 		ofImage img(grabber.getPixelsRef());
 		ofImage sml(img);
 		sml.resize(W/S, H/S);
-		faceFinder.findHaarObjects(sml, 16, 16);
+		faceFinder.findHaarObjects(sml, 64, 64);
 		
 		tracker.source = &sml;
 
@@ -62,13 +63,12 @@ void testApp::draw(){
 	float sx = (float) grabber.width  / ofGetWidth ();
 	float sy = (float) grabber.height / ofGetHeight();
 
-	//bgAlpha += faceFinder.blobs.size() ? (40.0-bgAlpha)/10.0 : (255.0-bgAlpha)/10.0;
-	//ofSetColor(255,255,255, bgAlpha); 
+	bgAlpha += tracker.faces.size() ? (40.0-bgAlpha)/10.0 : (255.0-bgAlpha)/10.0;
+	ofSetColor(255,255,255, bgAlpha); 
 	
-	
-	ofSetColor(255);
 	grabber.draw(0,0, grabber.width/sx, grabber.height/sy);
 
+	ofSetColor(255);
 	for(int i = 0; i < tracker.faces.size(); i++) {
 		
 		ofRectangle r = tracker.faces[i].rect;
@@ -91,9 +91,8 @@ void testApp::keyPressed(int key){
 
 	if (key=='s') {
 		if(!tracker.faces.empty()) {
-			Face f;
-			//f.img = faces[0];
-			//faceCom.addFace(f);
+			for(int i=0; i<tracker.faces.size(); i++)
+				faceCom.addFace(&tracker.faces[i]);
 		}
 	}
 

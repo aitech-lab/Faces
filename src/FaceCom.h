@@ -8,10 +8,10 @@ public:
 	FaceCom(void);
 	~FaceCom(void);
 
-	queue<Face>  facesQueue;
+	queue<Face*>  facesQueue;
 	vector<Face> processedFaces;
 
-	void addFace(Face& f);
+	void addFace(Face* f);
 	void threadedFunction();
 
 private:	

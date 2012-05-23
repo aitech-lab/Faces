@@ -25,7 +25,7 @@ void FaceCom::threadedFunction() {
 }
 
 void FaceCom::callFaceCom() {
-	Face f = facesQueue.front();
+	Face& f = *facesQueue.front();
 	facesQueue.pop();
 
 	string fname = ofGetTimestampString();
@@ -35,7 +35,7 @@ void FaceCom::callFaceCom() {
 	f.img.saveImage(iname);
 
 	// FACECOM
-	string path = "curl.exe -F media=@data\\"+iname+" \"http://api.face.com/faces/detect.xml?api_key="+string(API_KEY)+"&api_secret="+string(SEC_KEY)+"\" -o data\\"+xname;
+	string path = "curl.exe -F media=@data\\"+iname+" \"http://api.face.com/faces/recognize.xml?api_key="+string(API_KEY)+"&api_secret="+string(SEC_KEY)+"&uids=all@ailove.lab\" -o data\\"+xname;
 	system(path.c_str());
 	ofxXmlSettings xml(xname);
 	f.parseXML(xml);
@@ -43,6 +43,6 @@ void FaceCom::callFaceCom() {
 
 }
 
-void FaceCom::addFace(Face& f) {
+void FaceCom::addFace(Face* f) {
 	facesQueue.push(f);
 }
