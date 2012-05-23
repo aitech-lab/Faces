@@ -5,11 +5,9 @@
 using namespace std;
 using namespace arma;
 
-
 FaceTracker::FaceTracker(void) {
 
 }
-
 
 FaceTracker::~FaceTracker(void) {
 

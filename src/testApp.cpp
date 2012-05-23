@@ -37,7 +37,19 @@ void testApp::update(){
 		ofImage sml(img);
 		sml.resize(W/S, H/S);
 		faceFinder.findHaarObjects(sml, 16, 16);
-		//tracker.trackFaces(faceFinder, img, S);
+		
+
+		vector<Face> blobs;
+		for(int i=0; i<faceFinder.blobs.size(); i++) {
+			Face        f;
+			ofRectangle b = faceFinder.blobs[i].boundingRect;
+			f.rect.width  = b.width;
+			f.rect.height = b.width;
+			f.setCenter(b.getCenter());
+			blobs.push_back(f);
+		}
+		tracker.trackFaces(blobs);
+		cout << blobs.size() << "\n";
 	}
 }
 
@@ -54,9 +66,9 @@ void testApp::draw(){
 	grabber.draw(0,0, grabber.width/sx, grabber.height/sy);
 
 	ofSetColor(255);
-	for(int i = 0; i < faces.size(); i++) {
-		ofRectangle r = faceFinder.blobs[i].boundingRect;
-		faces[i].draw(r.x*S/sx, r.y*S/sy, r.width*S/sx, r.height*S/sy);
+	for(int i = 0; i < tracker.faces.size(); i++) {
+		ofRectangle r = tracker.faces[i].rect;
+		ofRect(r.x*S/sx, r.y*S/sy, r.width*S/sx, r.height*S/sy);
 	}
 
 	//if(detectEyes) {
@@ -77,8 +89,8 @@ void testApp::keyPressed(int key){
 	if (key=='s') {
 		if(!faces.empty()) {
 			Face f;
-			f.img = faces[0];
-			faceCom.addFace(f);
+			//f.img = faces[0];
+			//faceCom.addFace(f);
 		}
 	}
 
