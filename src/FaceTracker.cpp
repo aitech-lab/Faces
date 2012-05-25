@@ -66,7 +66,8 @@ void FaceTracker::trackFaces(vector<Face>& blobs) {
 				faces[j].setCenter(blobs[i].center);
 				faces[j].rect.width  = blobs[i].rect.width ;
 				faces[j].rect.height = blobs[i].rect.height;
-
+				faces[j].trackingTimer++;
+			
 				if(rt) faces[j].velocity = ofPoint(0,0); // if tracking recovered - reset speed
 				
 				if (source) {

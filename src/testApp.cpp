@@ -2,7 +2,7 @@
 
 #define W 640
 #define H 480
-#define S   2
+#define S   1
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -52,7 +52,13 @@ void testApp::update(){
 			blobs.push_back(f);
 		}
 		tracker.trackFaces(blobs);
+
+		for(int i = 0; i < tracker.faces.size(); i++) {
+			if((tracker.faces[i].trackingTimer+50) % 60 == 0) faceCom.addFace(&tracker.faces[i]);
+		}
+
 	}
+
 	
 }
 
@@ -79,7 +85,16 @@ void testApp::draw(){
 		ofNoFill();
 		ofRect(r.x*S/sx, r.y*S/sy, r.width*S/sx, r.height*S/sy);
 
-		ofDrawBitmapString(ofToString(tracker.faces[i].lostTrackingTimer), r.x*S/sx, r.y*S/sy-1);
+		ofDrawBitmapString(
+			ofToString(tracker.faces[i].lostTrackingTimer)+
+			string(" - ")+
+			ofToString(tracker.faces[i].trackingTimer), 
+			r.x*S/sx, r.y*S/sy-1);
+		
+		ofDrawBitmapString(
+			tracker.faces[i].uid,
+			r.x*S/sx, (r.y+r.height+10)*S/sy-1);
+
 	}
 
 	ofSetColor(255);
@@ -89,12 +104,6 @@ void testApp::draw(){
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 
-	if (key=='s') {
-		if(!tracker.faces.empty()) {
-			for(int i=0; i<tracker.faces.size(); i++)
-				faceCom.addFace(&tracker.faces[i]);
-		}
-	}
 
 }
 
