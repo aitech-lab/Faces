@@ -1,0 +1,12 @@
+npoints 3 nbounds 5
+point1 8 point2 9 bounds 8 46 1 -31
+point1 9 point2 10 bounds 7 52 26 -3
+point1 8 point2 10 bounds 17 98 17 -15
+point1 9 point2 10 bounds 7 52 26 -3
+point1 10 point2 8 bounds -98 -17 15 -17
+
+n_distances 2
+Reference_distances 8 10
+point1 8 point2 9 distance 0.543059 max_difference 0.269901 min_dist 0.191211 max_dist 1.039169
+point1 9 point2 10 distance 0.563683 max_difference 0.227783 min_dist 0.251168 max_dist 1.028905
+max_threshold 0.457115

@@ -1,0 +1,39 @@
+﻿Build started 12.06.2012 13:50:43.
+     1>Project "C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\face_detection_example\face_detection_example.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Release\face_detection_example.unsuccessfulbuild".
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I../../../include /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt face_detection_example.cpp
+         face_detection_example.cpp
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\face_detection_example.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:../../../lib face_detector.lib additional_utils.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\face_detection_example.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\face_detection_example.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\face_detection_example.lib" /MACHINE:X86 Release\face_detection_example.obj
+         Release\stdafx.obj
+         Generating code
+         Finished generating code
+     1>face_detector.lib(Properties.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(Properties.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(FaceDetector.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(FaceDetector.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(PGM.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(PGM.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(additional_functions.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(additional_functions.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(structs.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(structs.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(FaceGraph.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(FaceGraph.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(FaceDetectorThreads.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(FaceDetectorThreads.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(Edge detection.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(Edge detection.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(SimpleGraphic.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(SimpleGraphic.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(FacialFeatureDetector.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(FacialFeatureDetector.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(UnionFind.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(UnionFind.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(PointDetector.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(PointDetector.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(GeneralizedHough.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(GeneralizedHough.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(DGJTypes.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(DGJTypes.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(CascadeStage.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(CascadeStage.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+     1>face_detector.lib(Cascade.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'face_detector.lib(Cascade.obj)' or at 'C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\vc100.pdb'; linking object as if no debug info
+         face_detection_example.vcxproj -> C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\face_detection_example.exe
+       Manifest:
+         c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\Release\face_detection_example.exe;#1" /manifest Release\face_detection_example.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\face_detection_example.unsuccessfulbuild".
+         Touching "Release\face_detection_example.lastbuildstate".
+     1>Done Building Project "C:\Laboratory\Projects\Ailove-Faces\DAFLibrary\Sample (VS2010)\face_detection_example\face_detection_example\face_detection_example.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.99

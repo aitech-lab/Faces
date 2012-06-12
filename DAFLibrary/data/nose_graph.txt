@@ -1,0 +1,23 @@
+3 distances 3 nodes
+
+0 el1= 0 el2= 1
+ref_dist= 0.217224 min= 0.067167 max= 0.361840
+d_left= 2 d_right= 14 d_top= 0 d_bottom= 9
+shift_x= 0.196022 shift_y= 0.087768
+
+1 el1= 0 el2= 2
+ref_dist= 0.400006 min= 0.200000 max= 0.600000
+d_left= 9 d_right= 26 d_top= -7 d_bottom= 7
+shift_x= 0.399207 shift_y= -0.005232
+
+2 el1= 1 el2= 2
+ref_dist= 0.225473 min= 0.108912 max= 0.351199
+d_left= 3 d_right= 15 d_top= -10 d_bottom= 1
+shift_x= 0.203184 shift_y= -0.093000
+
+
+Angles
+
+0 1 2 mean_angle= 2.298680
+0 2 1 mean_angle= 0.412384
+1 0 2 mean_angle= 0.430529

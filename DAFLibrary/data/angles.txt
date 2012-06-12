@@ -1,0 +1,19 @@
+feature_0
+angle 1 0 3 min 0.312136 max 1.417089 mean 0.695185
+angle 0 1 2 min 1.504228 max 3.083805 mean 2.320646
+angle 1 2 3 min 0.278300 max 1.215725 mean 0.676100
+angle 0 3 2 min 1.847310 max 3.141593 mean 2.590427
+feature_1
+angle 1 0 3 min 0.244978 max 1.133458 mean 0.670241
+angle 0 1 2 min 1.405648 max 3.141593 mean 2.308552
+angle 1 2 3 min 0.244978 max 1.237976 mean 0.702256
+angle 0 3 2 min 1.931362 max 3.141593 mean 2.601441
+feature_2
+angle 1 0 2 min 0.000000 max 0.907924 mean 0.430529
+angle 0 1 2 min 1.534003 max 3.141593 mean 2.298680
+angle 0 2 1 min 0.000000 max 0.925046 mean 0.412384
+feature_3
+angle 1 0 3 min 0.195020 max 1.515377 mean 0.662867
+angle 0 1 2 min 1.570796 max 3.141593 mean 2.624886
+angle 1 2 3 min 0.213531 max 1.635887 mean 0.631797
+angle 0 3 2 min 1.348335 max 3.141593 mean 2.334353

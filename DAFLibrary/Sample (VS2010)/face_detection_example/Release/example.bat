@@ -1,0 +1,1 @@
+face_detection_example ..\..\..\data\ "..\..\..\sample_face.pgm" detection_result.pgm
