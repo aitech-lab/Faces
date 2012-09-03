@@ -37,7 +37,7 @@ void testApp::update(){
 	
 	if(grabber.isFrameNew()) {
 		ofImage img(grabber.getPixelsRef());
-		faceFinder.findHaarObjects(img, 100, 100);
+		faceFinder.findHaarObjects(img, 50, 50);
 		int fc = faceFinder.blobs.size();
 
 		for(int f=0; f<fc; f++) {
@@ -48,41 +48,41 @@ void testApp::update(){
 			face.cropFrom(img, fr.x, fr.y, fr.width, fr.height);
 			
 			int ec;
-			eyeFinder.findHaarObjects(face, 40, 20);
-			ec = eyeFinder.blobs.size();
-			for(int e=0; e<ec; e++) {
-				ofRectangle& er = eyeFinder.blobs[e].boundingRect;
-				er.x += fr.x;
-				er.y += fr.y;
-				blobs.push_back(er);
-			}
-
-			// leftEyeFinder.findHaarObjects(face, 20, 10);
-			// ec = leftEyeFinder.blobs.size();
+			// eyeFinder.findHaarObjects(face, 40, 20);
+			// ec = eyeFinder.blobs.size();
 			// for(int e=0; e<ec; e++) {
-			// 	ofRectangle& er = leftEyeFinder.blobs[e].boundingRect;
-			// 	er.x += fr.x;
-			// 	er.y += fr.y;
-			// 	blobs.push_back(er);
-			// }
-			// 
-			// rightEyeFinder.findHaarObjects(face, 20, 10);
-			// ec = rightEyeFinder.blobs.size();
-			// for(int e=0; e<ec; e++) {
-			// 	ofRectangle& er = rightEyeFinder.blobs[e].boundingRect;
+			// 	ofRectangle& er = eyeFinder.blobs[e].boundingRect;
 			// 	er.x += fr.x;
 			// 	er.y += fr.y;
 			// 	blobs.push_back(er);
 			// }
 
-			mouthFinder.findHaarObjects(face, 40, 20);
-			int mc = mouthFinder.blobs.size();
-			for(int m=0; m<mc; m++) {
-				ofRectangle& mr = mouthFinder.blobs[m].boundingRect;
-				mr.x += fr.x;
-				mr.y += fr.y;
-				blobs.push_back(mr);
-			}
+			//leftEyeFinder.findHaarObjects(face, 20, 10);
+			//ec = leftEyeFinder.blobs.size();
+			//for(int e=0; e<ec; e++) {
+			//	ofRectangle& er = leftEyeFinder.blobs[e].boundingRect;
+			//	er.x += fr.x;
+			//	er.y += fr.y;
+			//	blobs.push_back(er);
+			//}
+			//
+			//rightEyeFinder.findHaarObjects(face, 20, 10);
+			//ec = rightEyeFinder.blobs.size();
+			//for(int e=0; e<ec; e++) {
+			//	ofRectangle& er = rightEyeFinder.blobs[e].boundingRect;
+			//	er.x += fr.x;
+			//	er.y += fr.y;
+			//	blobs.push_back(er);
+			//}
+
+			//mouthFinder.findHaarObjects(face, 40, 20);
+			//int mc = mouthFinder.blobs.size();
+			//for(int m=0; m<mc; m++) {
+			//	ofRectangle& mr = mouthFinder.blobs[m].boundingRect;
+			//	mr.x += fr.x;
+			//	mr.y += fr.y;
+			//	blobs.push_back(mr);
+			//}
 		}
 	}
 	
@@ -102,8 +102,8 @@ void testApp::draw(){
 		ofRect(blobs[i]);
 	}
 
-	ofSetColor(255);
-	labLogo.draw(ofGetWidth() - labLogo.width, ofGetHeight() - labLogo.height); 
+	//ofSetColor(255);
+	//labLogo.draw(ofGetWidth() - labLogo.width, ofGetHeight() - labLogo.height); 
 }
 
 //--------------------------------------------------------------
